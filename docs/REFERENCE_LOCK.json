@@ -1,0 +1,67 @@
+{
+  "status": "LOCKED_ACCEPTED_REFERENCE",
+  "source": "user-reproduced v0.4 verification contained in outputs(5).zip",
+  "reference_physics_changed_in_v0_6": false,
+  "verification": {
+    "mode": "formal",
+    "primary": {
+      "mode": "formal",
+      "grids": [[50,20],[100,40],[150,60]],
+      "nt": 81,
+      "nr": 96,
+      "gates": {
+        "macro_MMS_second_order": true,
+        "particle_MMS_second_order": true,
+        "Li_conservation": true,
+        "current_balance": true,
+        "thermal_balance": true,
+        "charge_residual": true,
+        "BV_guard_inactive": true,
+        "field_grid_independence": true,
+        "scientific_self_convergence_order": true
+      },
+      "all_required_gates_pass": true,
+      "max_medium_fine_field_relative_L2": 0.0019710508552138388,
+      "scientific_observed_orders": {
+        "V_cell": 2.0050890358564106,
+        "ce_min_positive": 1.9468506096132343,
+        "reaction_centroid_x_positive": 1.993980070074237
+      }
+    },
+    "extended": {
+      "mode": "formal",
+      "gates": {
+        "temporal_independence": true,
+        "radial_independence": true,
+        "temporal_order_defined": true,
+        "radial_order_defined": true,
+        "temporal_order_consistent_with_BE": true,
+        "radial_refinement_consistent": true
+      },
+      "all_required_gates_pass": true,
+      "max_temporal_medium_fine_normalized": 0.0006110632398738482,
+      "max_radial_medium_fine_normalized": 0.001312467261388628,
+      "temporal_orders": {
+        "V_cell": 0.9246637793822932,
+        "T_max": 0.7852813303983343,
+        "SOC_p": 0.9999999999903129,
+        "ce_min_positive": 0.9619684899541435
+      },
+      "radial_orders": {
+        "theta_n_surf": 2.0235621352891924,
+        "theta_p_surf": 2.034322492335937,
+        "theta_n_avg": 1.9353884032302016,
+        "theta_p_avg": 1.9630797772093236
+      }
+    },
+    "all_required_gates_pass": true,
+    "methodology": {
+      "macro_spatial_order": "three-grid self-convergence at fixed radially-converged Nr",
+      "operator_order": "independent manufactured solutions for macro and spherical FV operators",
+      "temporal_order": "separate three-dt study; backward-Euler expectation approximately first order",
+      "radial_order": "separate three-Nr study using reconstructed physical particle-surface concentration",
+      "reference_leakage_into_FAIN_training": false
+    }
+  },
+  "policy": "Do not alter FVM/reference physics to improve FAIN agreement. Re-run verify_reference only for reproducibility or after an intentional reference-physics change."
+}
