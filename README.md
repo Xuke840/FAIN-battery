@@ -85,4 +85,4 @@ Citation metadata are provided in `CITATION.cff`. Update the preferred citation 
 
 ## License
 
-No software license has been selected yet. A license should be added before the repository is described as formally open-source software.
+This software is released under the MIT License. See `LICENSE`.
