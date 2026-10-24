@@ -1,0 +1,142 @@
+FAIN v0.13 model equations and representation summary
+=====================================================
+
+Domain
+------
+Omega = Omega_n union Omega_s union Omega_p
+x_n = 0.42, x_s = 0.58, Lx = 1, Ly = 0.4.
+
+Electrolyte transport
+---------------------
+eps_k dc_e/dt - div(D_e grad c_e) = gamma_li a_k j       electrodes
+eps_s dc_e/dt - div(D_e grad c_e) = 0                   separator
+
+i_e = -kappa grad(phi_e) + chi_ln_ce kappa grad(c_e)/c_e
+
+div(i_e) = a_k j                                         electrodes
+div(i_e) = 0                                             separator
+
+Solid charge and Butler–Volmer closure
+--------------------------------------
+i_s = -sigma grad(phi_s)
+div(i_s) + a_k j = 0
+
+eta_k = phi_s - phi_e - U_k(theta_surf)
+i0_k  = k0_k sqrt(c_e theta_surf (1-theta_surf))
+j_k   = 2 i0_k sinh(beta_BV eta_k / T)
+
+j is derived from the state fields; it is not a prescribed reaction shape.
+
+Hard solid-current representation
+----------------------------------
+negative electrode:
+  i_s,x(0)   = -I(t)
+  i_s,x(x_n) = 0
+positive electrode:
+  i_s,x(x_s) = 0
+  i_s,x(Lx)  = -I(t)
+
+The learned solid-potential correction has zero x derivative at all four ends,
+so these current conditions are structural identities.
+
+Galvanostatic reaction compatibility
+-------------------------------------
+At fixed protocol times, deterministic Gauss quadrature enforces
+
+  a_n int_Omega_n j_n dOmega = -I(t) Ly
+  a_p int_Omega_p j_p dOmega = +I(t) Ly.
+
+The residual scale corresponds to 3% of I_app Ly. No FVM trajectory is used.
+
+Electrolyte potential representation
+-------------------------------------
+psi_e = phi_e - chi_ln_ce ln(c_e/c_e0).
+
+psi_e = analytic uniform-current baseline + bounded learned correction.
+The v0.13 learned correction envelope is 1% of the a-priori potential scale.
+
+c_e, psi_e and T use a common interface trace plus region-interior bubbles.
+Therefore c_e, phi_e and T are exactly continuous at x_n and x_s, while their
+one-sided normal derivatives remain independent and flux continuity is still a
+physical residual.
+
+Particle mean and surface states
+--------------------------------
+For each electrode, the physics-only mean baseline follows the integrated
+applied-current lithium inventory. The learned local correction is expanded in
+continuous cosine basis functions with exactly zero integral over the electrode
+rectangle:
+
+  theta_avg(x,y,t) = theta_avg,base(t) + delta_theta_avg(x,y,t),
+  int_Omega_k delta_theta_avg dOmega = 0.
+
+Hence the network may redistribute local SOC but cannot create a net electrode
+SOC drift.
+
+The particle-surface state uses the half-space diffusion/current-convolution
+baseline plus a small zero-spatial-mean correction:
+
+  theta_surf = theta_surf,base(t) + delta_theta_surf(x,y,t).
+
+Local particle moment conservation
+----------------------------------
+The learned mean state is additionally constrained by
+
+  C_s d(theta_avg)/dt + gamma_li a j = 0.
+
+This is a low-variance physical moment equation and is distinct from the
+second-order radial profile residual.
+
+Particle radial reconstruction
+------------------------------
+Spherical diffusion:
+
+  dtheta/dt = D_s [theta_rr + (2/r) theta_r]
+
+is evaluated in conservative form
+
+  r^2 theta_t - D_s d/dr(r^2 theta_r) = 0.
+
+The radial profile is reconstructed from theta_avg, theta_surf and BV flux so
+that the following are structural identities:
+
+  theta_r(0) = 0
+  -D_s theta_r(1) = chi_k j
+  3 int_0^1 theta r^2 dr = theta_avg
+  theta(1) = theta_surf.
+
+The interior profile uses two even diffusion-boundary-layer basis functions
+
+  b_lambda(r) = cosh(lambda r)/cosh(lambda),
+  lambda_1 = 1/sqrt(D_s t_final),  lambda_2 = 2 lambda_1.
+
+The three coefficients in theta=A+B b_lambda1+C b_lambda2 are solved
+analytically from theta_avg, theta_surf and the BV surface flux.  No learned
+radial correction mode is used in v0.13.
+
+Because the second-order radial residual has much higher stochastic variance
+than the moment equation, v0.13 trains its raw normalized MSE L_radial through
+
+  L_shape = log(1 + L_radial),
+
+with a secondary weight. The raw L_radial is still exported for audit.
+
+Thermal balance
+---------------
+rho_cp dT/dt - div(k_T grad T) = q_gen.
+
+q_gen includes reaction, electrolyte ohmic, solid ohmic and reversible terms in
+the electrodes, and electrolyte ohmic heating in the separator.
+
+Checkpoint selection
+--------------------
+Final and EMA states are compared without reference data on identical fixed
+interior, boundary, interface, radial and reaction-quadrature points. The
+selection score combines physically normalized transport, charge divergence,
+total current, particle moment, radial shape, boundary, interface flux,
+reaction compatibility and gauge metrics using a log1p multi-category score.
+
+Training/data statement
+-----------------------
+Supervised reference fraction = 0.0.
+The FVM reference is loaded only after training by fain_postprocess.py.
