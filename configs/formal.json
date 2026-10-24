@@ -1,0 +1,24 @@
+{
+  "version": "v0.13-particle-boundary-layer",
+  "reference": {
+    "Nx": 150,
+    "Ny": 60,
+    "Nt": 81,
+    "Nr": 96
+  },
+  "training": {
+    "steps": 12000,
+    "ncol_per_region": 256,
+    "seed": 20260913,
+    "dtype": "float32",
+    "reference_supervision_fraction": 0.0
+  },
+  "models": {
+    "fain": {"width": 96,"depth": 4,"particle_width": 64,"particle_depth": 3},
+    "pure_pinn": {"width": 96,"depth": 4,"particle_width": 64,"particle_depth": 3},
+    "res_pinn": {"width": 96,"depth": 4,"particle_width": 64,"particle_depth": 3},
+    "param_mlp": {"width": 205,"depth": 4,"particle_width": 64,"particle_depth": 3},
+    "siren_pinn": {"width": 96,"depth": 4,"particle_width": 64,"particle_depth": 3},
+    "xpinn": {"width": 96,"depth": 4,"particle_width": 64,"particle_depth": 3}
+  }
+}
