@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-24",
+  "python_compile": true,
+  "python_comment_tokens": 0,
+  "python_docstrings": 0,
+  "module_imports": true,
+  "parameter_counts": {"FAIN":354640,"Pure PINN":120688,"Res-PINN":168016,"Parameter-matched MLP":353621,"SIREN-PINN":83440,"XPINN":139981},
+  "strict_checkpoint_loading": {"FAIN":"PASS","Pure PINN":"PASS","Res-PINN":"PASS","Parameter-matched MLP":"PASS","SIREN-PINN":"PASS","XPINN":"PASS"},
+  "smoke_reference": "PASS",
+  "smoke_training": {"FAIN":"PASS","Pure PINN":"PASS","XPINN":"PASS"},
+  "smoke_evaluation": "PASS",
+  "quick_verification": {"macro_MMS_second_order":"PASS","particle_MMS_second_order":"PASS","Li_conservation":"PASS","current_balance":"PASS","thermal_balance":"PASS","charge_residual":"PASS","BV_guard_inactive":"PASS","field_grid_independence":"PASS","temporal_independence":"PASS","radial_independence":"PASS","MASTER_VERIFICATION":"PASS"}
+}
