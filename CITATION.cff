@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the associated FAIN battery manuscript."
+title: "FAIN: Field-Aware Interaction Physics-Informed Reconstruction of Two-Dimensional Electrochemical-Thermal Battery States"
+type: software
+authors:
+  - family-names: Xu
+    given-names: Ke
+    orcid: "https://orcid.org/0009-0003-7880-0235"
+  - family-names: Tao
+    given-names: Ze
+    orcid: "https://orcid.org/0009-0004-0202-3641"
+repository-code: "https://github.com/Xuke840/FAIN-battery"
+date-released: 2026-10-24
+version: "0.13"
+license: "NOASSERTION"
+preferred-citation:
+  type: article
+  title: "FAIN: Field-Aware Interaction Physics-Informed Reconstruction of Two-Dimensional Electrochemical-Thermal Battery States"
+  authors:
+    - family-names: Xu
+      given-names: Ke
+    - family-names: Tao
+      given-names: Ze
+  year: 2026
