@@ -1,0 +1,15 @@
+{
+  "paper_code_base": "FAIN v0.13 particle-boundary-layer",
+  "integrated_repo_date": "2026-10-24",
+  "historically_preserved_source": {
+    "FAIN": ["fain_physics.py","fain_network.py","fain_train.py","fain_reference_fvm.py","fain_postprocess.py","fain_verify.py","fain_independence.py"],
+    "extra_baselines": ["baseline_networks_v013.py","baseline_train_v013.py","baseline_postprocess_v013.py"]
+  },
+  "archive_compatible_reconstruction": ["Pure PINN","Res-PINN","Parameter-matched MLP"],
+  "reconstruction_basis": ["archived formal checkpoints","training_config.json architecture metadata","retained v0.13 physical representation"],
+  "validation": {
+    "strict_checkpoint_loading": true,
+    "parameter_counts": {"FAIN":354640,"Pure PINN":120688,"Res-PINN":168016,"Parameter-matched MLP":353621,"SIREN-PINN":83440,"XPINN":139981}
+  },
+  "code_policy": "All Python comments and docstrings removed in this integrated GitHub edition."
+}
